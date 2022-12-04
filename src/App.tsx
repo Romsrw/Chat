@@ -5,20 +5,22 @@ import ChatPage from "./pages/ChatPage";
 
 const useStyles = makeStyles()((theme) => ({
   root: {
-    background: theme.palette.background.paper,
+    margin: "0 auto",
+    maxWidth: theme.spacing(100),
+    height: "100vh",
   },
 }));
 
 const App = () => {
   const { classes } = useStyles();
   return (
-    <div className={classes.root}>
+    <main className={classes.root}>
       <Routes>
         <Route path="/auth" element={<AuthPage />} />
         <Route path="/chat" element={<ChatPage />} />
-        <Route path="*" element={<Navigate to="/auth" />} />
+        {/* <Route path="*" element={<Navigate to="/auth" />} /> */}
       </Routes>
-    </div>
+    </main>
   );
 };
 
