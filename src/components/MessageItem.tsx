@@ -7,9 +7,15 @@ const useStyles = makeStyles()((theme) => ({
     width: "100%",
     display: "flex",
     marginBottom: theme.spacing(1),
+    boxSizing: "border-box",
   },
   message: {
-    padding: theme.spacing(1),
+    padding: theme.spacing(1, 2),
+    maxWidth: "80%",
+  },
+  myMessage: {},
+  text: {
+    wordBreak: "keep-all",
   },
 }));
 
@@ -19,10 +25,25 @@ interface IProps {
 
 const MessageItem = ({ message }: IProps) => {
   const { classes } = useStyles();
+  const savedUsername = sessionStorage.getItem("username");
+  const authorMessage =
+    savedUsername === message.username ? "You" : message.username;
+  const styleMessage =
+    savedUsername === message.username
+      ? { justifyContent: "flex-end", backgroundColor: "white" }
+      : { justifyContent: "flex-start", backgroundColor: "#EBF0FD" };
   return (
-    <li className={classes.messageWrapper}>
-      <Paper elevation={3} className={classes.message}>
-        <Typography>{message.text}</Typography>
+    <li
+      className={classes.messageWrapper}
+      style={{ justifyContent: styleMessage.justifyContent }}
+    >
+      <Paper
+        elevation={3}
+        className={classes.message}
+        style={{ backgroundColor: styleMessage.backgroundColor }}
+      >
+        <Typography fontWeight="bold">{authorMessage}:</Typography>
+        <Typography className={classes.text}>{message.text}</Typography>
       </Paper>
     </li>
   );

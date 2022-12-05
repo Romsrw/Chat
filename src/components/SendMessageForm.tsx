@@ -19,6 +19,7 @@ const useStyles = makeStyles()((theme) => ({
 const SendMessageForm = () => {
   const { classes } = useStyles();
   const [text, setText] = useState("");
+  const username = sessionStorage.getItem("username");
 
   const handleChangeInput = (event: ChangeEvent<HTMLInputElement>) => {
     setText(event.target.value);
@@ -26,10 +27,11 @@ const SendMessageForm = () => {
 
   const handleSendMessage = (event: FormEvent) => {
     event.preventDefault();
-    if (text.trim()) {
+    if (text.trim() && username) {
       const newMessage: IMessage = {
         id: Date.now().toString(),
         text,
+        username,
       };
       const oldMessages: IMessage[] = JSON.parse(
         localStorage.getItem("localMessages") || "[]"

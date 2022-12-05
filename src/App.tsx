@@ -1,6 +1,7 @@
-import { Container } from "@mui/material";
 import { Navigate, Route, Routes } from "react-router-dom";
+import { Container } from "@mui/material";
 import { makeStyles } from "tss-react/mui";
+import { AuthRouter } from "./components/AuthRouter";
 import AuthPage from "./pages/AuthPage";
 import ChatPage from "./pages/ChatPage";
 
@@ -18,8 +19,15 @@ const App = () => {
     <Container className={classes.root} maxWidth="md">
       <Routes>
         <Route path="/auth" element={<AuthPage />} />
-        <Route path="/chat" element={<ChatPage />} />
-        {/* <Route path="*" element={<Navigate to="/auth" />} /> */}
+        <Route
+          path="/chat"
+          element={
+            <AuthRouter>
+              <ChatPage />
+            </AuthRouter>
+          }
+        />
+        <Route path="*" element={<Navigate to="/auth" />} />
       </Routes>
     </Container>
   );
