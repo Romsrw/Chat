@@ -1,6 +1,6 @@
 import { ChangeEvent, FormEvent, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { Button, TextField } from "@mui/material";
+import { Box, Button, Paper, TextField } from "@mui/material";
 import { makeStyles } from "tss-react/mui";
 
 const useStyles = makeStyles()((theme) => ({
@@ -10,9 +10,18 @@ const useStyles = makeStyles()((theme) => ({
     display: "flex",
     alignItems: "center",
     justifyContent: "center",
+    backgroundColor: theme.palette.background.paper,
+  },
+  formWrapper: {
+    padding: theme.spacing(3),
+    margin: theme.spacing(1),
   },
   authForm: {
     display: "flex",
+    flexDirection: "column",
+  },
+  inputName: {
+    marginBottom: theme.spacing(3),
   },
 }));
 
@@ -27,27 +36,32 @@ const AuthPage = () => {
 
   const handleSubmit = (event: FormEvent) => {
     event.preventDefault();
-    sessionStorage.setItem("username", username);
-    navigate("/chat");
+    if (username.trim()) {
+      sessionStorage.setItem("username", username);
+      navigate("/chat");
+    }
   };
 
   return (
-    <div className={classes.authWrapper}>
-      <form className={classes.authForm} onSubmit={handleSubmit}>
-        <TextField
-          label="Enter You name"
-          variant="outlined"
-          required
-          size="small"
-          autoComplete="off"
-          value={username}
-          onChange={handleChangeInput}
-        />
-        <Button type="submit" variant="contained">
-          Login
-        </Button>
-      </form>
-    </div>
+    <Box className={classes.authWrapper}>
+      <Paper className={classes.formWrapper} elevation={3}>
+        <form className={classes.authForm} onSubmit={handleSubmit}>
+          <TextField
+            label="Enter You name"
+            variant="outlined"
+            required
+            size="small"
+            autoComplete="off"
+            value={username}
+            onChange={handleChangeInput}
+            className={classes.inputName}
+          />
+          <Button type="submit" variant="contained">
+            Login
+          </Button>
+        </form>
+      </Paper>
+    </Box>
   );
 };
 
