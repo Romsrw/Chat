@@ -47,7 +47,7 @@ const AuthPage = () => {
       <Paper className={classes.formWrapper} elevation={3}>
         <form className={classes.authForm} onSubmit={handleSubmit}>
           <TextField
-            label="Enter You name"
+            label="Enter your name"
             variant="outlined"
             required
             size="small"

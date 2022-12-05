@@ -7,10 +7,10 @@ const useStyles = makeStyles()((theme) => ({
   root: {
     width: "100%",
     height: "100vh",
-    backgroundColor: theme.palette.background.paper,
     display: "flex",
     flexDirection: "column",
-    justifyContent: "space-between",
+    justifyContent: "flex-end",
+    backgroundColor: "#f5f5f5",
   },
 }));
 

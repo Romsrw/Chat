@@ -1,6 +1,7 @@
 import { useState, ChangeEvent, FormEvent } from "react";
 import { makeStyles } from "tss-react/mui";
 import { Button, TextField } from "@mui/material";
+import { IMessage } from "../types";
 
 const useStyles = makeStyles()((theme) => ({
   formWrapper: {
@@ -8,6 +9,7 @@ const useStyles = makeStyles()((theme) => ({
     flexDirection: "row",
     padding: theme.spacing(3, 0),
     borderTop: "1px solid #e0e0eb",
+    backgroundColor: theme.palette.background.default,
   },
   inputText: {
     marginRight: theme.spacing(1),
@@ -25,17 +27,18 @@ const SendMessageForm = () => {
   const handleSendMessage = (event: FormEvent) => {
     event.preventDefault();
     if (text.trim()) {
-      const newMessage = {
+      const newMessage: IMessage = {
         id: Date.now().toString(),
         text,
       };
-      const oldMessages = JSON.parse(
+      const oldMessages: IMessage[] = JSON.parse(
         localStorage.getItem("localMessages") || "[]"
       );
       localStorage.setItem(
         "localMessages",
         JSON.stringify([...oldMessages, newMessage])
       );
+      window.dispatchEvent(new Event("storage"));
       setText("");
     }
   };

@@ -1,36 +1,61 @@
+import { useEffect, useRef, useState } from "react";
 import { makeStyles } from "tss-react/mui";
-import { Box } from "@mui/material";
+import { Box, Typography } from "@mui/material";
+import { IMessage } from "../types";
+import MessageItem from "./MessageItem";
 
 const useStyles = makeStyles()((theme) => ({
-  listWrapper: {},
+  listWrapper: {
+    overflow: "auto",
+  },
   list: {
     listStyle: "none",
     margin: 0,
-    padding: 0,
+    padding: theme.spacing(1),
     display: "flex",
     flexDirection: "column",
     alignItems: "flex-end",
     justifyContent: "flex-end",
-    overflow: "auto",
     flex: 1,
-  },
-  listItem: {
-    width: "100%",
-    display: "flex",
   },
 }));
 
 const MessageList = () => {
   const { classes } = useStyles();
+  const listWrapper = useRef<HTMLDivElement | null>(null);
+  const [messages, setMessages] = useState<IMessage[]>(
+    JSON.parse(localStorage.getItem("localMessages") || "[]")
+  );
+
+  useEffect(() => {
+    const setMessagesHandler = () => {
+      setMessages(JSON.parse(localStorage.getItem("localMessages") || "[]"));
+    };
+    window.addEventListener("storage", setMessagesHandler);
+
+    return () => window.removeEventListener("storage", setMessagesHandler);
+  }, []);
+
+  useEffect(() => {
+    if (listWrapper.current) {
+      listWrapper.current.scrollTo({
+        top:
+          listWrapper.current.scrollHeight - listWrapper.current.offsetHeight,
+      });
+    }
+  }, [messages]);
+
   return (
-    <Box className={classes.listWrapper}>
-      <ul className={classes.list}>
-        <li className={classes.listItem}>message item1</li>
-        <li className={classes.listItem}>message item2</li>
-        <li className={classes.listItem}>message item3</li>
-        <li className={classes.listItem}>message item4</li>
-        <li className={classes.listItem}>message item5</li>
-      </ul>
+    <Box className={classes.listWrapper} ref={listWrapper}>
+      {messages.length ? (
+        <ul className={classes.list}>
+          {messages.map((message) => (
+            <MessageItem key={message.id} message={message} />
+          ))}
+        </ul>
+      ) : (
+        <Typography textAlign="center">No messages</Typography>
+      )}
     </Box>
   );
 };
